@@ -1,0 +1,6 @@
+F := 1;
+while N > 1 do
+begin
+  F := F * N;
+  N := N - 1
+end

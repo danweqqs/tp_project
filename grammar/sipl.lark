@@ -1,0 +1,60 @@
+start: stmt
+
+stmt: simple (SEMI simple)*
+simple: assign | skip | if_stmt | while_stmt | block
+assign: NAME ASSIGN expr
+skip: SKIP
+if_stmt: IF cond THEN simple (ELSE simple)?
+while_stmt: WHILE cond DO simple
+block: BEGIN stmt END
+
+cond: or_cond
+or_cond: and_cond | or_cond OR and_cond
+and_cond: not_cond | and_cond AND not_cond
+not_cond: atom_cond | NOT not_cond
+atom_cond: compare | bool | LPAR cond RPAR
+compare: expr relop expr
+relop: LT | LE | GT | GE | EQ | NE
+bool: TRUE | FALSE
+
+expr: term | expr PLUS term | expr MINUS term
+term: factor | term STAR factor | term SLASH factor | term PERCENT factor
+factor: NUMBER | NAME | MINUS factor | LPAR expr RPAR
+
+ASSIGN: ":="
+SEMI: ";"
+LPAR: "("
+RPAR: ")"
+PLUS: "+"
+MINUS: "-"
+STAR: "*"
+SLASH: "/"
+PERCENT: "%"
+LE: "<="
+GE: ">="
+NE: "<>"
+LT: "<"
+GT: ">"
+EQ: "="
+
+BEGIN: "begin"
+END: "end"
+SKIP: "skip"
+IF: "if"
+THEN: "then"
+ELSE: "else"
+WHILE: "while"
+DO: "do"
+AND: "and"
+OR: "or"
+NOT: "not"
+TRUE: "true"
+FALSE: "false"
+
+NUMBER: /[0-9]+/
+NAME: /[A-Za-z_][A-Za-z_0-9]*/
+COMMENT: /\/\/[^\n]*/
+
+%import common.WS
+%ignore WS
+%ignore COMMENT

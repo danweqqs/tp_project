@@ -1,0 +1,3 @@
+// НСД відніманням
+while not (A = B) do
+  if A > B then A := A - B else B := B - A
